@@ -3,7 +3,6 @@ package com.venus.carpapa.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -23,7 +22,6 @@ import com.venus.carpapa.vo.ChildTargeList_thread;
 import com.venus.carpapa.vo.ChildTargetList_five;
 import com.venus.carpapa.vo.ChildTargetList_secend;
 import com.venus.carpapa.vo.ChildTrgeList_four;
-import com.venus.carpapa.vo.TargetInfo;
 
 /**
  * HttpUtil.java
@@ -251,12 +249,7 @@ public class HttpUtil {
 	}
 
 	public static ArrayList<ChildTargeList> getChildTargeList4JSON(String id) {
-
-		ArrayList<ChildTargeList> mChildArrayList_list = new ArrayList<ChildTargeList>();
-		ArrayList<ChildTargetList_secend> mbChildArrayList_list = new ArrayList<ChildTargetList_secend>();
-		ArrayList<ChildTargeList_thread> mcChildArrayList = new ArrayList<ChildTargeList_thread>();
-		ArrayList<ChildTrgeList_four> mdChildArrayList_list = new ArrayList<ChildTrgeList_four>();
-		ArrayList<ChildTargetList_five> meChildArrayList_list = new ArrayList<ChildTargetList_five>();
+		ArrayList<ChildTargeList> mArrayList = new ArrayList<ChildTargeList>();
 
 		try {
 			ArrayList<String> key = new ArrayList<String>();
@@ -265,82 +258,38 @@ public class HttpUtil {
 			volue.add(id);
 			String str = HttpU(ORDER_URL_CarAssess_NameSpace, "loadCarAssess",
 					ORDER_URL_CarAssess_ENDPOINT, key, volue);
-			JSONObject mJsonObject = new JSONObject(str);                                 
+			JSONObject mJsonObject = new JSONObject(str);
 			JSONArray mJsonArray = mJsonObject.getJSONArray("assessList");
-
-			// 第一次循环 分开 检测和事故
-			for (int i = 0; i < mJsonArray.length(); i++) {
-				ChildTargeList mChildTargeList = new ChildTargeList();
-				JSONObject js = (JSONObject) mJsonArray.get(i);
-				// 检测 与 事故
-				mChildTargeList.setTargetName(js.optString("targetName"));
-
-				JSONArray mBJsonArray = js.optJSONArray("childTargetList");
-				// 第二次循环 分开 项目类别
-				for (int j = 0; j < mBJsonArray.length(); j++) {
-					// 检查的大项（全体驾驶系统）
-					ChildTargetList_secend mChildTargetList_secend = new ChildTargetList_secend();
-					JSONObject jss = (JSONObject) mBJsonArray.get(j);
-					mChildTargetList_secend.setTargetName(jss
-							.getString("targetName"));
-					JSONArray mBcJsonArray = jss
-							.getJSONArray("childTargetList");
-					// 第三次循环 分开 项目类别的子类
-					for (int k = 0; k < mBcJsonArray.length(); k++) {
-						// 检查的大项分类 驾驶系统(需要的值)
-						JSONObject jsss = (JSONObject) mBcJsonArray.get(k);
-						ChildTargeList_thread mChildTargeList_thread = new ChildTargeList_thread();
-						mChildTargeList_thread.setTargetName(jsss
-								.getString("targetName"));
-						JSONArray mBcaJsonArray = jsss
-								.getJSONArray("childTargetList");
-						// 第三次循环 分开 项目类别的子类总类
-						for (int l = 0; l < mBcaJsonArray.length(); l++) {
-							// 检查的大项分类(发动机)(需要的值)
-							ChildTrgeList_four mChildTargetList_four = new ChildTrgeList_four();
-							JSONObject jssss = (JSONObject) mBcaJsonArray
-									.get(l);
-							mChildTargetList_four.setTargetName(jssss
-									.getString("targetName"));
-							JSONArray mBcaaJsonArray = jssss
-									.getJSONArray("childTargetList");
-
-							for (int o = 0; o < mBcaaJsonArray.length(); o++) {
-								// 检查的大项分类(发动机 的 修复情况)(需要的值)
-								ChildTargetList_five mChildTargetList_five = new ChildTargetList_five();
-								JSONObject mmmmmObject = (JSONObject) mBcaaJsonArray
-										.get(o);
-								mChildTargetList_five.setTargetName(mmmmmObject
-										.getString("targetName"));
-								mChildTargetList_five.setChecked(mmmmmObject
-										.optInt("checked"));
-								meChildArrayList_list
-										.add(mChildTargetList_five);
-
-							}
-							mChildTargetList_four
-									.setmChildTargetList_fives(meChildArrayList_list);
-							mdChildArrayList_list.add(mChildTargetList_four);
-						}
-						mChildTargeList_thread
-								.setmChildTrgeList_fours(mdChildArrayList_list);
-						mcChildArrayList.add(mChildTargeList_thread);
-					}
-					mChildTargetList_secend
-							.setmChildTargeList_threads(mcChildArrayList);
-					mbChildArrayList_list.add(mChildTargetList_secend);
-				}
-				mChildTargeList
-						.setmChildTargetList_secends(mbChildArrayList_list);
-				mChildArrayList_list.add(mChildTargeList);
-			}
-
+			return ischeaded(mJsonArray.getJSONObject(0), mArrayList);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 
-		return mChildArrayList_list;
+	}
 
+	public static ArrayList<ChildTargeList> ischeaded(JSONObject jsonObject,
+			ArrayList<ChildTargeList> mChildTargeList_ist) {
+		@SuppressWarnings("unchecked")
+		Iterator<String> it = jsonObject.keys();
+		while (it.hasNext()) {
+			ChildTargeList mChildTargeList = new ChildTargeList();
+			mChildTargeList.setTargetName(jsonObject.optString("targetName"));
+			mChildTargeList.setLevel(jsonObject.optInt("level"));
+			JSONArray array = jsonObject.optJSONArray("childTargetList");
+			if (array != null) {
+				ArrayList<ChildTargeList> bChildTargeList_ist = new ArrayList<ChildTargeList>();
+				mChildTargeList
+						.setmChildTargetList_secends(bChildTargeList_ist);
+				for (int i = 0; i < array.length(); i++) {
+					ischeaded(array.optJSONObject(i), bChildTargeList_ist);
+				}
+			} else {
+				mChildTargeList.setChecked(jsonObject.optInt("checked"));
+			}
+			mChildTargeList_ist.add(mChildTargeList);
+		}
+		return mChildTargeList_ist;
 	}
 
 	// private List<TargetInfo> getAllTargetInfoTreeList(

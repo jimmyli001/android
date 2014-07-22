@@ -74,23 +74,23 @@ public class JiancheActivity extends FragmentActivity {
 				return str;
 			}
 			protected void onPostExecute(ArrayList<ChildTargeList> result) {
-				if (null != str) {
-					str_thread = new ArrayList<ChildTargeList_thread>();
-					for (int i = 0; i < str.get(0)
-							.getmChildTargetList_secends().size(); i++) {
-						str_thread.addAll(str.get(0)
-								.getmChildTargetList_secends().get(i)
-								.getmChildTargeList_threads());
-					}
-					myAdapter mAdapter = new myAdapter(JiancheActivity.this,
-							str_thread);
-					mmAdapter = new mbAdapter(JiancheActivity.this);
-					mmAdapter.addAll(str_thread.get(0)
-							.getmChildTrgeList_fours());
-					mListView.setAdapter(mAdapter);
-					mbListView.setAdapter(mmAdapter);
+//				if (null != str) {
+//					str_thread = new ArrayList<ChildTargeList_thread>();
+//					for (int i = 0; i < str.get(0)
+//							.getmChildTargetList_secends().size(); i++) {
+//						str_thread.addAll(str.get(0)
+//								.getmChildTargetList_secends().get(i)
+//								.getmChildTargeList_threads());
+//					}
+//					myAdapter mAdapter = new myAdapter(JiancheActivity.this,
+//							str_thread);
+//					mmAdapter = new mbAdapter(JiancheActivity.this);
+//					mmAdapter.addAll(str_thread.get(0)
+//							.getmChildTrgeList_fours());
+//					mListView.setAdapter(mAdapter);
+//					mbListView.setAdapter(mmAdapter);
 
-				}
+//				}
 			}
 
 		}.execute();
