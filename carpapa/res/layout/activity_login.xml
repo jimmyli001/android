@@ -54,7 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
-              android:background="#CECECE"
+                        android:background="#CECECE"
                         android:drawableLeft="@drawable/left_mima"
                         android:drawablePadding="10dp"
                         android:hint="密码"
@@ -115,6 +115,6 @@
         </ScrollView>
     </LinearLayout>
 
-    <!-- <include layout="@layout/loading_progress" /> -->
+    <include layout="@layout/loading_progress" />
 
 </RelativeLayout>

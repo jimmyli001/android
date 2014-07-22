@@ -7,110 +7,130 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="@drawable/head_line_bg"
-        >
+        android:layout_height="wrap_content"
+        android:background="@drawable/head_line_bg" >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            
-            android:layout_marginLeft="5dp"
-            android:onClick="back"
-            android:background="@drawable/back_btn_bg"/>
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/back_btn_bg"
+            android:onClick="back" />
 
         <TextView
             android:id="@+id/noTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:text="编号12345" />
+            android:text="编号12345"
+            android:textColor="@color/white" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
             android:background="@drawable/ic_save"
-            android:text="上传" />
+            android:text="上传"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        
         android:orientation="horizontal" >
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_weight="1" >
+            android:orientation="vertical" >
 
-           
-
-            <TextView
+            <RelativeLayout
                 android:id="@+id/infoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:onClick="info"
-                android:textColor="@color/white"
-                  android:drawableTop="@drawable/six_icon"
-                android:text="基本信息" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:background="@drawable/six_icon"
+                android:onClick="info" >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-             android:gravity="center"
-            android:layout_weight="1" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="基本信息"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
 
-            <TextView
+            <RelativeLayout
                 android:id="@+id/jiancheText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                 android:gravity="center"
-                android:drawableTop="@drawable/zonghe_icon"
-               android:textColor="@color/white"
-                android:text="综合检测" />
+                android:layout_weight="1"
+                android:background="@drawable/zonghe_icon"
+                android:onClick="jianche" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="综合检测"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-             android:gravity="center"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-            <TextView
+            <RelativeLayout
                 android:id="@+id/shiguText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/shigu_icon"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="事故勘察" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:background="@drawable/shigu_icon"
+                android:onClick="shigu" >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-             android:gravity="center"
-            android:layout_weight="1" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="事故勘察"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
 
-            <TextView
+            <RelativeLayout
                 android:id="@+id/photoTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/photo_icon"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="上传照片" />
+                android:layout_weight="1"
+                android:background="@drawable/photo_icon"
+                android:onClick="photo" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="上传照片"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 

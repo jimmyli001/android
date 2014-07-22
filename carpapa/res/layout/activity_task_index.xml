@@ -6,28 +6,28 @@
 
     <ListView
         android:id="@+id/chejianListView"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_above="@+id/bottomLine"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp" >
     </ListView>
 
     <LinearLayout
+        android:id="@+id/bottomLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottomLine"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:orientation="vertical" >
 
         <Button
             android:id="@+id/exitBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:background="#009697"
             android:button="@drawable/btn_selector"
             android:text="退出"
             android:textColor="@color/white" />

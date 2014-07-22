@@ -1,7 +1,6 @@
 package com.venus.carpapa.adapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +27,6 @@ public class ChejianAdapter extends BaseAdapter {
 		this.context = context;
 		this.result = result;
 		layoutInflater = LayoutInflater.from(context);
-
 	}
 
 	@Override
@@ -53,71 +50,80 @@ public class ChejianAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		TextView noTextView = null, timeTextView = null, addressTextView = null;
-		TextView statusTextView;
-		ImageView phoneImageView = null;
-		convertView = layoutInflater.inflate(R.layout.item_chejian, null);
-		noTextView = (TextView) convertView.findViewById(R.id.noTextView);
-		timeTextView = (TextView) convertView.findViewById(R.id.timeTextView);
-		addressTextView = (TextView) convertView
-				.findViewById(R.id.addressTextView);
-
-		statusTextView = (TextView) convertView
-				.findViewById(R.id.statusTextView);
-		phoneImageView = (ImageView) convertView
-				.findViewById(R.id.phoneImageView);
+		holder mholder;
 		if (convertView == null) {
-			// convertView.setTag(lvw_custom_img);
+			mholder = new holder();
+			convertView = layoutInflater.inflate(R.layout.item_chejian, parent,
+					false);
+			mholder.noTextView = (TextView) convertView
+					.findViewById(R.id.noTextView);
+			mholder.timeTextView = (TextView) convertView
+					.findViewById(R.id.timeTextView);
+			mholder.addressTextView = (TextView) convertView
+					.findViewById(R.id.addressTextView);
+			mholder.statusTextView = (TextView) convertView
+					.findViewById(R.id.statusTextView);
+			mholder.phoneImageView = (ImageView) convertView
+					.findViewById(R.id.phoneImageView);
+			convertView.setTag(mholder);
 		} else {
-			// lvw_custom_img = (ImageView) convertView.getTag();
+			mholder = (holder) convertView.getTag();
 		}
 		final CarSellDtoVo vo = result.get(position);
 		if (vo != null) {
 			try {
-				noTextView.setText("车辆编号：" + vo.getCarSellCoding());
+				mholder.noTextView.setText("车辆编号：" + vo.getCarSellCoding());
 
 				// timeTextView.setText("预约时间："+vo.getTime());
 				if (vo.getState() == 0) {
-					statusTextView.setText("未审核");
+					mholder.statusTextView.setText("未审核");
 				} else if (vo.getState() == 1) {
-					statusTextView.setText("审核通过");
+					mholder.statusTextView.setText("审核通过");
 				} else if (vo.getState() == 2) {
-					statusTextView.setText("审核未通过");
+					mholder.statusTextView.setText("审核未通过");
 				}
-				addressTextView.setText(vo.getAddress());
-				noTextView.setOnClickListener(new View.OnClickListener() {
+				mholder.addressTextView.setText(vo.getAddress());
+				mholder.noTextView
+						.setOnClickListener(new View.OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						task(vo.getCarSellCoding(), vo.getCarId(),
-								vo.getCarSellCoding());
-					}
-				});
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								task(vo.getCarSellCoding(), vo.getCarId(),
+										vo.getCarSellCoding());
+							}
+						});
 
-				phoneImageView.setOnClickListener(new View.OnClickListener() {
+				mholder.phoneImageView
+						.setOnClickListener(new View.OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						start(vo.getTel());
-					}
-				});
-				addressTextView.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								start(vo.getTel());
+							}
+						});
+				mholder.addressTextView
+						.setOnClickListener(new View.OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						map(vo.getAddress());
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								map(vo.getAddress());
 
-					}
-				});
+							}
+						});
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		}
 		return convertView;
+	}
+
+	class holder {
+		TextView noTextView, timeTextView, addressTextView, statusTextView;
+		ImageView phoneImageView;
 	}
 
 	//
