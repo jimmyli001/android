@@ -25,6 +25,7 @@ import com.venus.carpapa.vo.ChildTargeList;
 import com.venus.carpapa.vo.ChildTargeList_thread;
 import com.venus.carpapa.vo.ChildTargetList_secend;
 import com.venus.carpapa.vo.ChildTrgeList_four;
+import com.venus.carpapa.vo.TargetInfoInterface;
 
 public class JiancheActivity extends FragmentActivity {
 
@@ -32,9 +33,7 @@ public class JiancheActivity extends FragmentActivity {
 	ListView mListView, mbListView;
 	String carSellCoding;
 	mbAdapter mmAdapter;
-	ArrayList<ChildTargeList> str;
-	ArrayList<ChildTargeList_thread> str_thread;
-	ArrayList<ChildTrgeList_four> str_four;
+	ArrayList<TargetInfoInterface> str;
 	private int name;
 
 	@Override
@@ -55,42 +54,45 @@ public class JiancheActivity extends FragmentActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				if (null != str) {
-					mmAdapter.clear();
-					mmAdapter.addAll(str_thread.get((int) arg3)
-							.getmChildTrgeList_fours());
-					mbListView.setAdapter(mmAdapter);
-				}
+				// if (null != str) {
+				// mmAdapter.clear();
+				// mmAdapter.addAll(str_thread.get((int) arg3)
+				// .getmChildTrgeList_fours());
+				// mbListView.setAdapter(mmAdapter);
+				// }
 			}
 
 		});
 	}
 
 	private void LoadData() {
-		new AsyncTask<Object, Object, ArrayList<ChildTargeList>>() {
+		new AsyncTask<Object, Object, ArrayList<TargetInfoInterface>>() {
 			@Override
-			protected ArrayList<ChildTargeList> doInBackground(Object... params) {
-				str = HttpUtil.getChildTargeList4JSON(carSellCoding);
+			protected ArrayList<TargetInfoInterface> doInBackground(
+					Object... params) {
+				str = HttpUtil.getChildTargeList4JSON(carSellCoding, name);
+				Log.i("tag", str.toString());
 				return str;
 			}
-			protected void onPostExecute(ArrayList<ChildTargeList> result) {
-//				if (null != str) {
-//					str_thread = new ArrayList<ChildTargeList_thread>();
-//					for (int i = 0; i < str.get(0)
-//							.getmChildTargetList_secends().size(); i++) {
-//						str_thread.addAll(str.get(0)
-//								.getmChildTargetList_secends().get(i)
-//								.getmChildTargeList_threads());
-//					}
-//					myAdapter mAdapter = new myAdapter(JiancheActivity.this,
-//							str_thread);
-//					mmAdapter = new mbAdapter(JiancheActivity.this);
-//					mmAdapter.addAll(str_thread.get(0)
-//							.getmChildTrgeList_fours());
-//					mListView.setAdapter(mAdapter);
-//					mbListView.setAdapter(mmAdapter);
 
-//				}
+			protected void onPostExecute(ArrayList<ChildTargeList> result) {
+				// if (null != str) {
+				// str_thread = new ArrayList<ChildTargeList_thread>();
+				// for (int i = 0; i < str.get(0)
+				// .getmChildTargetList_secends().size(); i++) {
+				// str_thread.addAll(str.get(0)
+				// .getmChildTargetList_secends().get(i)
+				// .getmChildTargeList_threads());
+				// }
+				// myAdapter mAdapter = new myAdapter(JiancheActivity.this,
+				// str_thread);
+				// mmAdapter = new mbAdapter(JiancheActivity.this);
+				// mmAdapter.addAll(str_thread.get(0)
+				// .getmChildTrgeList_fours());
+				// mListView.setAdapter(mAdapter);
+				// mbListView.setAdapter(mmAdapter);
+
+				// }
 			}
 
 		}.execute();

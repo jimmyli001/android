@@ -3,6 +3,7 @@ package com.venus.carpapa.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -22,6 +23,8 @@ import com.venus.carpapa.vo.ChildTargeList_thread;
 import com.venus.carpapa.vo.ChildTargetList_five;
 import com.venus.carpapa.vo.ChildTargetList_secend;
 import com.venus.carpapa.vo.ChildTrgeList_four;
+import com.venus.carpapa.vo.TargetInfo;
+import com.venus.carpapa.vo.TargetInfoInterface;
 
 /**
  * HttpUtil.java
@@ -248,24 +251,67 @@ public class HttpUtil {
 
 	}
 
-	public static ArrayList<ChildTargeList> getChildTargeList4JSON(String id) {
-		ArrayList<ChildTargeList> mArrayList = new ArrayList<ChildTargeList>();
+	public static ArrayList<TargetInfoInterface> getChildTargeList4JSON(
+			String id, int flag) {
 
 		try {
 			ArrayList<String> key = new ArrayList<String>();
 			key.add("carSellCoding");
+			key.add("flag");
 			ArrayList<Object> volue = new ArrayList<Object>();
 			volue.add(id);
+			volue.add(flag);
 			String str = HttpU(ORDER_URL_CarAssess_NameSpace, "loadCarAssess",
 					ORDER_URL_CarAssess_ENDPOINT, key, volue);
-			JSONObject mJsonObject = new JSONObject(str);
-			JSONArray mJsonArray = mJsonObject.getJSONArray("assessList");
-			return ischeaded(mJsonArray.getJSONObject(0), mArrayList);
+			// JSONObject mJsonObject = new JSONObject(str);
+			// JSONArray mJsonArray = mJsonObject.getJSONArray("assessList");
+
+			JSONObject jsonobject = new JSONObject(str);
+			JSONArray array = jsonobject.getJSONArray("assessList");
+			ArrayList<TargetInfoInterface> list = jsonToObject(array);
+
+			return list;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 
+	}
+
+	protected static ArrayList<TargetInfoInterface> jsonToObject(JSONArray array) {
+		ArrayList<TargetInfoInterface> list = new ArrayList<TargetInfoInterface>();
+		try {
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject object = (JSONObject) array.get(i);
+				TargetInfoInterface tiif = new TargetInfoInterface();
+				tiif.setTargetId(Integer.parseInt(object.optString("targetId")));
+				tiif.setParentId(Integer.parseInt(object.optString("parentId")));
+				tiif.setLevel(Integer.parseInt(object.optString("level")));
+				tiif.setTargetName(object.optString("targetName"));
+
+				if (object.optString("childTargetList") != null
+						&& !"".equals(object.optString("childTargetList"))) {
+					JSONObject childObject = new JSONObject(
+							"{\"childTargetList\":"
+									+ object.optString("childTargetList") + "}");
+					JSONArray childArray = childObject
+							.getJSONArray("childTargetList");
+					tiif.setChildTargetList(jsonToObject(childArray));
+				} else {
+					tiif.setChildTargetList(null);
+				}
+
+				tiif.setChecked(Integer.parseInt(object.optString("checked") == null
+						|| "".equals(object.optString("checked")) ? "0"
+						: object.optString("checked")));
+
+				list.add(tiif);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
 	}
 
 	public static ArrayList<ChildTargeList> ischeaded(JSONObject jsonObject,
@@ -291,113 +337,6 @@ public class HttpUtil {
 		}
 		return mChildTargeList_ist;
 	}
-
-	// private List<TargetInfo> getAllTargetInfoTreeList(
-	// List<TargetInfo> targetInfoTreeList) throws Exception {
-	// List<TargetInfo> treeList = new ArrayList<TargetInfo>();
-	// for (TargetInfo ti1 : targetInfoTreeList) {// 本级
-	// List<TargetInfo> childList = new ArrayList<TargetInfo>();
-	// for (TargetInfo ti2 : allTargetInfoList) {// 子级
-	// if (ti1.getTargetId().intValue() == ti2.getParentId()
-	// .intValue()) {
-	// childList.add(ti2);
-	// }
-	// }
-	// if (ti1.getCheckParts() != null
-	// && ti1.getCheckParts().intValue() == 1) {
-	// ti1.setChildTargetInfoList(childList);
-	// } else {
-	// ti1.setChildTargetInfoList(getAllTargetInfoTreeList(childList));
-	// }
-	// treeList.add(ti1);
-	// }
-	// return treeList;
-	// }
-
-	// public static String getCode(String phone){
-	// Logger.d(tag, "getCode:"+phone);
-	//
-	// String result="";
-	// // 指定WebService的命名空间和调用的方法名
-	// SoapObject request = new SoapObject(URL_WEBSERVICE_NameSpace,
-	// URL_WEBSERVICE_GET_CODE);
-	// request.addProperty("mobile", phone);
-	// // 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
-	// SoapSerializationEnvelope envelope = new
-	// SoapSerializationEnvelope(SoapEnvelope.VER11);
-	// envelope.bodyOut = request;
-	// envelope.setOutputSoapObject(request);
-	// HttpTransportSE transport = new HttpTransportSE(URL_WEBSERVICE_ENDPOINT);
-	// transport.debug=true;
-	// try {
-	// // 调用WebService
-	// transport.call(URL_WEBSERVICE_NameSpace+"#"+URL_WEBSERVICE_GET_CODE,
-	// envelope);
-	// if (envelope.getResponse() != null) {
-	// result=envelope.getResponse().toString();
-	// }
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// Logger.d(tag, "getCode result:"+result);
-	// return result;
-	// }
-	// public static String setOrder(int uid,String username,String orderjson){
-	// Logger.d(tag, "uid:"+uid);
-	// Logger.d(tag, "username:"+username);
-	// Logger.d(tag, "orderjson:"+orderjson);
-	// String result="";
-	// // 指定WebService的命名空间和调用的方法名
-	// SoapObject request = new SoapObject(URL_WEBSERVICE_NameSpace,
-	// URL_WEBSERVICE_SET_ORDER);
-	// request.addProperty("uid", uid);
-	// request.addProperty("username", username);
-	// request.addProperty("orderjson", orderjson);
-	// // 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
-	// SoapSerializationEnvelope envelope = new
-	// SoapSerializationEnvelope(SoapEnvelope.VER11);
-	// envelope.bodyOut = request;
-	// envelope.setOutputSoapObject(request);
-	// HttpTransportSE transport = new HttpTransportSE(URL_WEBSERVICE_ENDPOINT);
-	// transport.debug=true;
-	// try {
-	// // 调用WebService
-	// transport.call(URL_WEBSERVICE_NameSpace+"#"+URL_WEBSERVICE_SET_ORDER,
-	// envelope);
-	// if (envelope.getResponse() != null) {
-	// result=envelope.getResponse().toString();
-	// }
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// return result;
-	// }
-	// public static String logout(String userId, String userPhone) {
-	// String result="";
-	// // 指定WebService的命名空间和调用的方法名
-	// SoapObject request = new SoapObject(URL_WEBSERVICE_NameSpace,
-	// URL_WEBSERVICE_LOGOUT);
-	// request.addProperty("uid", userId);
-	// request.addProperty("username", userPhone);
-	// // 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
-	// SoapSerializationEnvelope envelope = new
-	// SoapSerializationEnvelope(SoapEnvelope.VER11);
-	// envelope.bodyOut = request;
-	// envelope.setOutputSoapObject(request);
-	// HttpTransportSE transport = new HttpTransportSE(URL_WEBSERVICE_ENDPOINT);
-	// transport.debug=true;
-	// try {
-	// // 调用WebService
-	// transport.call(URL_WEBSERVICE_NameSpace+"#"+URL_WEBSERVICE_LOGOUT,
-	// envelope);
-	// if (envelope.getResponse() != null) {
-	// result=envelope.getResponse().toString();
-	// }
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// return result;
-	// }
 
 	/**
 	 * 调动服务器webservice接口
