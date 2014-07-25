@@ -71,21 +71,28 @@ public class HttpUtil {
 	/**
 	 * 
 	 * @param NamePace
+	 *            命名空间
 	 * @param Methods
+	 *            方法名
 	 * @param Url
+	 *            地址
 	 * @param canshu
+	 *            参数
 	 */
 	public static String HttpU(String NamePace, String Methods, String Url,
 			ArrayList<String> key, ArrayList<Object> volue) {
 		String result = "";
-		// 指定WebService的命名空间和调用的方法名
-		SoapObject request = new SoapObject(NamePace, Methods);
-		for (int i = 0; i < key.size(); i++) {
-			request.addProperty(key.get(i), volue.get(i));
-		}
 		// 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 				SoapEnvelope.VER11);
+		// 指定WebService的命名空间和调用的方法名
+		SoapObject request = new SoapObject(NamePace, Methods);
+
+		if (key != null) {
+			for (int i = 0; i < key.size(); i++) {
+				request.addProperty(key.get(i), volue.get(i));
+			}
+		}
 		envelope.bodyOut = request;
 		envelope.setOutputSoapObject(request);
 		HttpTransportSE transport = new HttpTransportSE(Url);
