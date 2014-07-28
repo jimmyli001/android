@@ -1,6 +1,7 @@
 package com.venus.carpapa.act.jianche;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -75,24 +76,17 @@ public class JiancheActivity extends FragmentActivity {
 				return str;
 			}
 
-			protected void onPostExecute(ArrayList<ChildTargeList> result) {
-				// if (null != str) {
-				// str_thread = new ArrayList<ChildTargeList_thread>();
-				// for (int i = 0; i < str.get(0)
-				// .getmChildTargetList_secends().size(); i++) {
-				// str_thread.addAll(str.get(0)
-				// .getmChildTargetList_secends().get(i)
-				// .getmChildTargeList_threads());
-				// }
-				// myAdapter mAdapter = new myAdapter(JiancheActivity.this,
-				// str_thread);
-				// mmAdapter = new mbAdapter(JiancheActivity.this);
-				// mmAdapter.addAll(str_thread.get(0)
-				// .getmChildTrgeList_fours());
-				// mListView.setAdapter(mAdapter);
-				// mbListView.setAdapter(mmAdapter);
+			protected void onPostExecute(ArrayList<TargetInfoInterface> result) {
+				if (null != result) {
 
-				// }
+					myAdapter mAdapter = new myAdapter(JiancheActivity.this,
+							result);
+					mmAdapter = new mbAdapter(JiancheActivity.this);
+					// mmAdapter.addAll(str_thread.get(0)
+					// .getmChildTrgeList_fours());
+					mListView.setAdapter(mAdapter);
+					mbListView.setAdapter(mmAdapter);
+				}
 			}
 
 		}.execute();
@@ -106,17 +100,15 @@ public class JiancheActivity extends FragmentActivity {
 	class myAdapter extends BaseAdapter {
 
 		Context context;
-		ArrayList<ChildTargeList_thread> mChildTargetList_secend;
+		ArrayList<TargetInfoInterface> MTargetInfoInterface;
 
-		public myAdapter(Context context,
-				ArrayList<ChildTargeList_thread> mChildTargetList_secend) {
+		public myAdapter(Context context, ArrayList<TargetInfoInterface> LIST) {
 			this.context = context;
-			this.mChildTargetList_secend = mChildTargetList_secend;
+			this.MTargetInfoInterface = (ArrayList<TargetInfoInterface>) LIST;
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
 			final Holder holder;
 			if (convertView == null) {
 				convertView = getLayoutInflater().inflate(
@@ -128,21 +120,21 @@ public class JiancheActivity extends FragmentActivity {
 			} else {
 				holder = (Holder) convertView.getTag();
 			}
-			holder.txl.setText(mChildTargetList_secend.get(position)
-					.getTargetName());
+			holder.txl.setText(MTargetInfoInterface.get(0).getChildTargetList()
+					.get(position).getTargetName());
 			return convertView;
 		}
 
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return mChildTargetList_secend.size();
+			return MTargetInfoInterface.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return mChildTargetList_secend.get(position);
+			return MTargetInfoInterface.get(position);
 		}
 
 		@Override

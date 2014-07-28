@@ -2,6 +2,7 @@ package com.venus.carpapa.util;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ import com.venus.carpapa.vo.ChildTargetList_secend;
 import com.venus.carpapa.vo.ChildTrgeList_four;
 import com.venus.carpapa.vo.TargetInfo;
 import com.venus.carpapa.vo.TargetInfoInterface;
+import com.venus.carpapa.vo.UserCarVo;
+import com.venus.carpapa.vo.UserCarVo_2;
 
 /**
  * HttpUtil.java
@@ -286,12 +289,53 @@ public class HttpUtil {
 
 	}
 
+	public static ArrayList<TargetInfoInterface> ObjectForMe(
+			List<TargetInfoInterface> list) {
+		int temp;
+		ArrayList<TargetInfoInterface> mmlist = new ArrayList<TargetInfoInterface>();
+		for (int i = 0; i < list.size(); i++) {
+			Log.i("tag", "ObjectForMe");
+			if (null != list.get(i).getChildTargetList()) {
+				Log.i("tag", "ObjectForMe+getChildTargetListbuweiNull");
+				ObjectForMe(list.get(i).getChildTargetList());
+			} else {
+				temp = list.get(i).getLevel();
+				mmlist = ObjectForMe1(list, temp);
+			}
+		}
+		return mmlist;
+
+	}
+
+	public static ArrayList<TargetInfoInterface> ObjectForMe1(
+			List<TargetInfoInterface> list, int temp) {
+		ArrayList<TargetInfoInterface> mmlist = new ArrayList<TargetInfoInterface>();
+		for (int i = 0; i < list.size(); i++) {
+			Log.i("tag", "ObjectForMe1");
+			if (null != list.get(i).getChildTargetList()) {
+				Log.i("tag", "getChildTargetList!=NULL");
+				if (list.get(i).getLevel() == temp - 2) {
+					mmlist.add(list.get(i));
+					boolean a = list.get(i).getLevel() == temp - 2;
+					Log.i("tag", "Y/N:" + a);
+				} else {
+					Log.i("tag", "Y/N:" + "WU");
+				}
+				ObjectForMe1(list.get(i).getChildTargetList(), temp);
+			} else {
+
+			}
+		}
+		return mmlist;
+	}
+
 	protected static ArrayList<TargetInfoInterface> jsonToObject(JSONArray array) {
 		ArrayList<TargetInfoInterface> list = new ArrayList<TargetInfoInterface>();
 		try {
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject object = (JSONObject) array.get(i);
 				TargetInfoInterface tiif = new TargetInfoInterface();
+
 				tiif.setTargetId(Integer.parseInt(object.optString("targetId")));
 				tiif.setParentId(Integer.parseInt(object.optString("parentId")));
 				tiif.setLevel(Integer.parseInt(object.optString("level")));
