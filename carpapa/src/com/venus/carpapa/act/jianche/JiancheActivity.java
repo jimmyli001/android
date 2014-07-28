@@ -72,7 +72,6 @@ public class JiancheActivity extends FragmentActivity {
 			protected ArrayList<TargetInfoInterface> doInBackground(
 					Object... params) {
 				str = HttpUtil.getChildTargeList4JSON(carSellCoding, name);
-				Log.i("tag", str.toString());
 				return str;
 			}
 
@@ -82,8 +81,7 @@ public class JiancheActivity extends FragmentActivity {
 					myAdapter mAdapter = new myAdapter(JiancheActivity.this,
 							result);
 					mmAdapter = new mbAdapter(JiancheActivity.this);
-					// mmAdapter.addAll(str_thread.get(0)
-					// .getmChildTrgeList_fours());
+					mmAdapter.addAll(result.get(0).getChildTargetList());
 					mListView.setAdapter(mAdapter);
 					mbListView.setAdapter(mmAdapter);
 				}
@@ -91,6 +89,12 @@ public class JiancheActivity extends FragmentActivity {
 
 		}.execute();
 
+	}
+	public ArrayList<TargetInfoInterface> chec(ArrayList<TargetInfoInterface> list){
+		
+		
+		return list;
+		
 	}
 
 	public void back(View v) {
@@ -128,13 +132,14 @@ public class JiancheActivity extends FragmentActivity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return MTargetInfoInterface.size();
+			return MTargetInfoInterface.get(0).getChildTargetList().size();
 		}
 
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return MTargetInfoInterface.get(position);
+			return MTargetInfoInterface.get(0).getChildTargetList()
+					.get(position);
 		}
 
 		@Override
@@ -148,7 +153,7 @@ public class JiancheActivity extends FragmentActivity {
 		TextView txl;
 	}
 
-	class mbAdapter extends ArrayAdapter<ChildTrgeList_four> {
+	class mbAdapter extends ArrayAdapter<TargetInfoInterface> {
 
 		public mbAdapter(Context context) {
 			super(context, 0);
@@ -173,13 +178,13 @@ public class JiancheActivity extends FragmentActivity {
 			}
 			holder.tx.setText(getItem(position).getTargetName());
 
-			String[] a = new String[getItem(position)
-					.getmChildTargetList_fives().size()];
-			for (int i = 0; i < a.length; i++) {
-				a[i] = getItem(position).getmChildTargetList_fives().get(i)
-						.getTargetName();
-			}
-			setspinner(holder.sp, a);
+//			String[] a = new String[getItem(position)
+//					.getmChildTargetList_fives().size()];
+//			for (int i = 0; i < a.length; i++) {
+//				a[i] = getItem(position).getmChildTargetList_fives().get(i)
+//						.getTargetName();
+//			}
+//			setspinner(holder.sp, a);
 			return convertView;
 		}
 	}

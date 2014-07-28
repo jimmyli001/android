@@ -273,6 +273,7 @@ public class HttpUtil {
 			volue.add(flag);
 			String str = HttpU(ORDER_URL_CarAssess_NameSpace, "loadCarAssess",
 					ORDER_URL_CarAssess_ENDPOINT, key, volue);
+
 			// JSONObject mJsonObject = new JSONObject(str);
 			// JSONArray mJsonArray = mJsonObject.getJSONArray("assessList");
 
@@ -291,16 +292,10 @@ public class HttpUtil {
 
 	public static ArrayList<TargetInfoInterface> ObjectForMe(
 			List<TargetInfoInterface> list) {
-		int temp;
 		ArrayList<TargetInfoInterface> mmlist = new ArrayList<TargetInfoInterface>();
 		for (int i = 0; i < list.size(); i++) {
-			Log.i("tag", "ObjectForMe");
 			if (null != list.get(i).getChildTargetList()) {
-				Log.i("tag", "ObjectForMe+getChildTargetListbuweiNull");
 				ObjectForMe(list.get(i).getChildTargetList());
-			} else {
-				temp = list.get(i).getLevel();
-				mmlist = ObjectForMe1(list, temp);
 			}
 		}
 		return mmlist;
@@ -311,19 +306,13 @@ public class HttpUtil {
 			List<TargetInfoInterface> list, int temp) {
 		ArrayList<TargetInfoInterface> mmlist = new ArrayList<TargetInfoInterface>();
 		for (int i = 0; i < list.size(); i++) {
-			Log.i("tag", "ObjectForMe1");
 			if (null != list.get(i).getChildTargetList()) {
-				Log.i("tag", "getChildTargetList!=NULL");
-				if (list.get(i).getLevel() == temp - 2) {
-					mmlist.add(list.get(i));
-					boolean a = list.get(i).getLevel() == temp - 2;
-					Log.i("tag", "Y/N:" + a);
-				} else {
-					Log.i("tag", "Y/N:" + "WU");
+				if (list.get(i).getLevel() - 2 > 0) {
+					if (list.get(i).getLevel() == temp - 2) {
+						mmlist.add(list.get(i));
+					}
+					ObjectForMe1(list.get(i).getChildTargetList(), temp);
 				}
-				ObjectForMe1(list.get(i).getChildTargetList(), temp);
-			} else {
-
 			}
 		}
 		return mmlist;
